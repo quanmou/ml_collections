@@ -14,7 +14,7 @@ class MySentences(object):
     def __iter__(self):
         for fname in os.listdir(self.dirname):
             for line in open(os.path.join(self.dirname, fname)):
-                line = tools.traditional2simplified(line)
+                # line = tools.traditional2simplified(line)
                 if len(line) > 0:
                     yield [segment.strip() for segment in jieba.cut(line.strip(), cut_all=False)
                     # yield [segment.strip() for segment in pkuseg.pkuseg().cut(line.strip())
@@ -40,9 +40,9 @@ if __name__ == '__main__':
     stop_f = codecs.open(u'stop_words.txt', 'r', encoding='utf-8')
     stoplist = {}.fromkeys([line.strip() for line in stop_f])
     # 进行jieba分词
-    sentences = MySentences('gensim')
+    sentences = MySentences('/home/quanzc/sougou_news_12G')
     # 分词结果写入文件
-    f = codecs.open('wiki.cn.gensim.jieba.txt', 'w', encoding='utf-8')
+    f = codecs.open('sohu.cn.gensim.jieba.txt', 'w', encoding='utf-8')
     i = 0
     j = 0
     w = tqdm(sentences, desc=u'分词句子')
