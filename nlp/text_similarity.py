@@ -77,26 +77,55 @@ def tfidf_similarity(s1, s2):
 # word2vec
 import gensim
 import jieba
-model_file = '/datadrive/data/models/word2vec/news_12g_baidubaike_20g_novel_90g_embedding_64.bin'
-model = gensim.models.KeyedVectors.load_word2vec_format(model_file, binary=True)
-def vector_similarity(s1, s2):
-    def sentence_vector(s):
-        words = jieba.lcut(s)
-        v = np.zeros(64)
-        for word in words:
-            v += model[word]
-        v /= len(words)
-        return v
 
-    v1, v2 = sentence_vector(s1), sentence_vector(s2)
-    return np.dot(v1, v2) / (norm(v1) * norm(v2))
+class w2v_model:
+    def __init__(self):
+        model_file = '/datadrive/data/models/word2vec/news_12g_baidubaike_20g_novel_90g_embedding_64.bin'
+        self.model = gensim.models.KeyedVectors.load_word2vec_format(model_file, binary=True)
+
+    def vector_similarity(self, s1, s2):
+        def sentence_vector(s):
+            words = jieba.lcut(s)
+            v = np.zeros(64)
+            for word in words:
+                v += self.model[word]
+            v /= len(words)
+            return v
+
+        v1, v2 = sentence_vector(s1), sentence_vector(s2)
+        return np.dot(v1, v2) / (norm(v1) * norm(v2))
 
 
-s1 = "你在干嘛呢"
-s2 = "你在干什么呢"
-print(jaccard_similarity(s1, s2))
-print(tf_similarity(s1, s2))
-print(tfidf_similarity(s1, s2))
-s1 = '你在干嘛'
-s2 = '你正做什么'
-print(vector_similarity(s1, s2))
+if __name__ == "__main__":
+    s1 = "你在干嘛呢"
+    s2 = "你在干什么呢"
+    print(jaccard_similarity(s1, s2))
+    print(tf_similarity(s1, s2))
+    print(tfidf_similarity(s1, s2))
+    s1 = '你在干嘛'
+    s2 = '你正做什么'
+
+    s1 = """工作经验要求，2年以上
+    1、全日制大学本科
+    2、有银行或互联网金融开发测试经验，从事过互联网支付、互联网账户、票据等业务的测试工作
+    3、2年以上测试实施经验，熟悉常用测试工具（Postman、Jmeter、LoadRunner等），熟悉测试管理工具（TFS、JIRA、禅道等）
+    4、性格开朗、责任心强，善于沟通，有团队精神
+    5、计算机专业优先、有自动化测试经验优先、银行相关项目经验优先
+    6、年龄30以下"""
+
+    s2 = """外场测试工程师
+    1.工作职责
+    外场测试工作人员主要开展相关电气分系统及产品测试工作，职责主要包括：
+    1）开展测试状态准备和设备自检，并进行测试记录填写；
+    2）按测试细则规定开展各种测试状态下的设备连接，进行测试操作，记录测试数据并进行判读；
+    3）向设计人员及时反馈测试过程中的技术、质量问题，并在设计指导下现场处理简单技术问题。
+    2.任职要求
+    1）具有电气类工科专业（微波专业佳）大专及以上学历和相关工作经验。相关工作经历未满3年者，一般应具备大学本科及以上学历；
+    2）熟悉航天质量管理体系，熟悉保密管理要求；
+    3）熟悉航天电气系统及产品测试流程；
+    4）工作责任心强，有较强的协调沟通能力，能适应频繁出差工作；
+    5）身体健康，年龄不超过35周岁；
+    6）具有微波产品测试工作经历者优先考虑。"""
+
+    w2v = w2v_model()
+    print(w2v.vector_similarity(s1, s2))
