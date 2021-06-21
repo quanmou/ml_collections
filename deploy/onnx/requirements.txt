@@ -1,0 +1,6 @@
+transformers==3.5.1
+torch==1.6.0+cpu
+torchvision==0.7.0+cpu
+onnxruntime==1.4.0
+-i https://test.pypi.org/simple/ ort-nightly
+onnxruntime-tools==1.7.0
